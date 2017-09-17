@@ -1,0 +1,188 @@
+.amber-card-wide.mdl-card {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.amber-navbar-logo-dark {
+  margin-right: 15px;
+  display: block;
+  width: 28px;
+  height: 28px;
+  padding: 0 !important;
+  background: url('../images/amber-logo-dark-small.png');
+  text-indent: -9999px;
+}
+.amber-navbar-logo {
+  margin-right: 15px;
+  display: block;
+  width: 28px;
+  height: 28px;
+  padding: 0 !important;
+  background: url('../images/amber-logo-small.png');
+  text-indent: -9999px;
+}
+.amber-navbar-logo-word {
+  display: block;
+  width: 92px;
+  height: 28px;
+  padding: 0 !important;
+  background: url('../images/amber-word-small.png');
+  text-indent: -9999px;
+}
+.mdl-layout__header-inverted {
+  background-color: rgb(60,60,60);
+}
+.amber-card-wide > .mdl-card__title {
+  color: #ffffff;
+  height: 176px;
+  background: url('../images/texture.png') center / cover;
+}
+.amber-card-image.mdl-card {
+  width: 100%;
+  height: 200px;
+  background: url('../images/texture.png') center / cover;
+}
+.amber-card-image > .mdl-card__actions {
+  padding: 16px;
+  background: rgba(0, 0, 0, 0.2);
+}
+.amber-card-image__filename {
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 500;
+}
+.mdl-layout__header-row {
+  padding-left: 32px;
+}
+.amber-info-icon {
+  color: rgb(255,255,255) !important;
+}
+.bitcoin-address-in-navbar {
+  color: #ffffff;
+  font-size: 14px;
+  margin-top: 14px;
+}
+.mdl-layout__header-inverted .amber-info-icon {
+  color: rgb(255,152,0) !important;
+}
+.amber-generate-spinner {
+  margin-top: 10px;
+}
+.amber-icon {
+  font-size: 40px !important;
+  height: 56px !important;
+}
+.mdl-dialog {
+  width: auto;
+  -ms-transform: scale(0, 0); /* IE 9 */
+  -webkit-transform: scale(0, 0); /* Safari */
+  transform: scale(0, 0);
+  transition: all .3s ease-in-out;
+}
+.mdl-dialog.open {
+  -ms-transform: scale(1, 1); /* IE 9 */
+  -webkit-transform: scale(1, 1); /* Safari */
+  transform: scale(1, 1);
+}
+
+.qr-code img {
+   padding: 5px;
+   width: auto;
+   max-width: 85%;
+   border: 5px solid #ffffff;
+   background-color: #ffffff;
+}
+.modal .close {
+  font-size: 36px;
+}
+.qr-code img {
+  margin-left: auto;
+  margin-right: auto;
+}
+#amber-generate-card,
+#amber-menu-card {
+  transition-property: margin-left;
+  transition-duration: 0.7s;
+  transition-timing-function: ease-in-out;
+  transition-delay: 0s;
+}
+#progress {
+  position: fixed;
+  top: 40%;
+  left: 16px;
+  right: 16px;
+  z-index: 9999;
+}
+.mdl-progress>.bufferbar  {
+  z-index: 1001;
+}
+.mdl-progress>.progressbar {
+  z-index: 1002;
+}
+#progress #p1 {
+  width: 100%;
+}
+.bufferbar {
+  width: 100% !important;
+}
+#emojis {
+  margin-top: 44px;
+  margin-left: 10px;
+  font-size: 44px;
+}
+.amber-generate-button-wrap {
+  padding: 0;
+}
+#generate-button {
+  margin: 8px;
+}
+.spinner-wrap {
+  position: fixed;
+  top: -50px;
+  left: -50px;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+}
+#generate-spinner {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  top: 50%;
+  left: 50%;
+  display: block;
+  z-index: 9999;
+}
+#generate-text {
+  position: absolute;
+  text-align: center;
+  width: 100px;
+  height: 100px;
+  top: 75%;
+  left: 50%;
+  display: block;
+  z-index: 9999;
+}
+
+.backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.9);
+  z-index: 9;
+}
+.fake-link {
+  cursor: pointer;
+  cursor: hand;
+}
+.img-responsive {
+  max-width: 80%;
+  height: auto;
+  display: block;
+}
+dialog {
+  margin-left: 8px;
+  margin-right: 8px;
+}

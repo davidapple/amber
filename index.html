@@ -1,0 +1,267 @@
+<html class="no-js" lang="">
+		<head>
+				<meta charset="utf-8">
+				<meta http-equiv="x-ua-compatible" content="ie=edge">
+				<title></title>
+				<meta name="description" content="">
+				<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+				<link rel="apple-touch-icon" href="apple-touch-icon.png">
+				<!-- Place favicon.ico in the root directory -->
+
+				<link rel="stylesheet" href="css/normalize.css">
+				<script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
+				
+				<link rel="stylesheet" href="fonts/material-icons.css" />
+				<link rel="stylesheet" href="css/material.min.css" />
+
+				<link rel="stylesheet" href="css/main.css">
+				<script type="text/javascript" src="js/modernizr.js"></script>
+				<script type="text/javascript" src="bower_components/mdl/material.min.js"></script>
+				<script type="text/javascript" src="bower_components/underscore/underscore-min.js"></script>
+				<script type="text/javascript" src="bower_components/backbone/backbone-min.js"></script>
+				<script type="text/javascript" src="bower_components/bitcoinjs/bitcoinjs.min.js"></script>
+				<script type="text/javascript" src="bower_components/bitcoinjs/bitcoinmessagejs.min.js"></script>
+				<script type="text/javascript" src="bower_components/qrcode.js/qrcode.js"></script>
+				<script type="text/javascript" src="bower_components/SHA-1/sha1.js"></script>
+				<script type="text/javascript" src="bower_components/warpwallet-dismantled/dist/js/warpwallet.min.js"></script>
+		</head>
+		<body>
+				<!--[if lt IE 8]>
+						<p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+				<![endif]-->
+
+				<div class="spinner-wrap" style="display: none;">
+					<div class="mdl-spinner mdl-js-spinner is-active amber-generate-spinner" id="generate-spinner"></div>
+					<p id="generate-text">Generating, please wait&hellip;</p>
+				</div>
+
+				<div id="generateCard"></div>
+				<div id="menuCard"></div>
+
+				<script type="text/template" id="login-screen">
+				<div class="progress" id="progress" style="display:none;">
+					<div id="p1" class="mdl-progress mdl-js-progress is-upgraded" data-upgraded="MaterialProgress">
+						<div class="progressbar bar bar1" id="progressbar"></div>
+						<div class="bufferbar bar bar2"></div>
+					</div>
+				</div>
+				<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+					<header class="mdl-layout__header">
+						<div class="mdl-layout__header-row">
+							<a class="mdl-layout-title mdl-navigation__link amber-navbar-logo-word" id="log-out" href="">Amber</a>
+							<div class="mdl-layout-spacer"></div>
+							<nav class="mdl-navigation">
+								<p class="mdl-navigation__link fake-link" id="about-button"><i class="material-icons mdl-list__item-icon amber-info-icon">info</i></p>
+							</nav>
+						</div>
+					</header>
+					<main class="mdl-layout__content">
+					<div class="backdrop" style="display: none;"></div>
+						<div class="mdl-grid">
+							<div class="mdl-cell mdl-cell--12-col" id="amber-generate-card">
+								<div class="amber-card-wide mdl-card mdl-shadow--2dp">
+									<div class="mdl-card__title">
+										<h2 class="mdl-card__title-text">The secure Bitcoin signature app</h2>
+									</div>
+									<div id="emojis"></div>
+									<div class="mdl-card__supporting-text">
+										<div class="mdl-textfield mdl-js-textfield" id="passphrase-area">
+												<input class="mdl-textfield__input" type="text" id="passphrase">
+												<label class="mdl-textfield__label" for="passphrase">Passphrase</label>
+										</div>
+										<div>
+										<br>
+										<div class="mdl-textfield mdl-js-textfield">
+												<input class="mdl-textfield__input" type="email" id="email">
+												<label class="mdl-textfield__label" for="email">Email (optional)</label>
+										</div>
+									</div>
+									<div class="mdl-card__actions mdl-card--border amber-generate-button-wrap">
+										<a class="mdl-button mdl-button--raised mdl-button--colored mdl-js-button mdl-js-ripple-effect generate-button" id="generate-button">
+											Generate
+										</a>
+										<a class="mdl-button mdl-button--raised mdl-button--colored mdl-js-button mdl-js-ripple-effect generate-button" id="scan">
+											Scan
+										</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</main>
+				</div>
+				<dialog class="mdl-dialog" id="about-dialog">
+
+					<h4 class="mdl-dialog__title">What is Amber?</h4>
+					<div class="mdl-dialog__content">
+
+						<p>Amber lets you create air gapped bitcoin addresses and transactions with your offline phone.</p>
+
+						<p>In order to take full advantage of offline wallet capabilities, we recommended you keep the phone where Amber is installed in airplane mode and never let it go online after you enter a passphrase.</p>
+
+						<p>Creating new bitcoin addresses uses the <a href="http://keybase.io/warp" target="_blank">Warpwallet</a> formula:</p>
+
+						<h6 id="warp-formula" class="fake-link">Warp Formula [...]</h6>
+						<img src="images/warpwallet-formula.png" class="img-responsive" id="warp-formula-img" style="max-width:300px; display:none">
+						
+						</br>
+
+						<p style="word-break: break-all;">For your security; you can double check the output address with other applications (for example&hellip; <a href="https://github.com/xorq/warpwallet_doublecheck_page" target="_blank">https://github.com/xorq/warpwallet_doublecheck_page</a> and <a href="https://github.com/davidapple/warpwallet-dismantled" target="_blank">https://github.com/davidapple/warpwallet-dismantled</a>)</p>
+
+						<p>You can use the emojis sequence to check that you haven't made a typo (if the emojis sequence is the same, your passphrase is the same)</p>
+
+						<p>To spend:</p>
+						<ol>
+							<li>Create a raw transaction on an online device, (using coinb.in for example)</li>
+							<li>With Amber, log in to your address using your passphrase/salt combination</li>
+							<li>After the wallet has been generated, click on Sign Transaction</li>
+							<li>The QR code with the signed transaction will show up, you have to scan it with an online device in order to push it to the bitcoin network (using a pushing service like <a href="blockchain.info/pushtx" target="_blank">blockchain.info/pushtx</a>, for example).</li>
+						</ol>
+
+					</div>
+
+					<div class="mdl-dialog__actions">
+						<button type="button" class="mdl-button mdl-button--colored hide-modal">Close</button>
+					</div>
+
+				</dialog>
+				</script>
+
+				<script type="text/template" id="after-login">
+
+				<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header mdl-layout--fixed-tabs">
+					<header class="mdl-layout__header mdl-layout__header-inverted">
+						<div class="mdl-layout__header-row">
+							<a class="mdl-layout-title mdl-navigation__link amber-navbar-logo" id="log-out" href="">Amber</a>
+							<p class="bitcoin-address-in-navbar ellipsis"><%=address%></p>
+							<div class="mdl-layout-spacer"></div>
+							<nav class="mdl-navigation mdl-layout--large-screen-only">
+								<p class="mdl-navigation__link fake-link" id="about-button"><i class="material-icons mdl-list__item-icon amber-info-icon">info</i></p>
+							</nav>
+						</div>
+					</header>
+					<main class="mdl-layout__content">
+						<div id="amber-menu-card">
+							<ul class="demo-list-three mdl-list">
+								<li class="mdl-list__item mdl-list__item--three-line">
+									<span class="mdl-list__item-primary-content show-modal" id="address-button">
+										<i class="material-icons mdl-list__item-icon amber-icon">account_circle</i>
+										<span>Address</span>
+										<span class="mdl-list__item-text-body">
+											Your bitcoin address. To receive Bitcoin
+										</span>
+									</span>
+								</li>
+								<li class="mdl-list__item mdl-list__item--three-line">
+									<span class="mdl-list__item-primary-content show-modal" id="pubkey-button">
+										<i class="material-icons mdl-list__item-icon amber-icon">vpn_key</i>
+										<span>Public Key</span>
+										<span class="mdl-list__item-text-body">
+											Your bitcoin Public Key.
+										</span>
+									</span>
+								</li>
+								<li class="mdl-list__item mdl-list__item--three-line">
+									<span class="mdl-list__item-primary-content show-modal" id="privkey-button">
+										<i class="material-icons mdl-list__item-icon amber-icon">vpn_key</i>
+										<span>Private Key</span>
+										<span class="mdl-list__item-text-body">
+											Your bitcoin private key. Keep this secret because it allows bitcoins to be spent.
+										</span>
+									</span>
+								</li>
+								<hr>
+								<li class="mdl-list__item mdl-list__item--three-line">
+									<span class="mdl-list__item-primary-content" id="transaction-button">
+										<i class="material-icons mdl-list__item-icon amber-icon">credit_card</i>
+										<span>Sign Transaction</span>
+										<span class="mdl-list__item-text-body">
+											Sign a transaction using your bitcoin private key.
+										</span>
+									</span>
+								</li>
+								<li class="mdl-list__item mdl-list__item--three-line">
+									<span class="mdl-list__item-primary-content" id="sign-button">
+										<i class="material-icons mdl-list__item-icon amber-icon">message</i>
+										<span>Sign Message</span>
+										<span class="mdl-list__item-text-body">
+											Sign a message using your bitcoin private key.
+										</span>
+									</span>
+								</li>
+							</ul>
+						</div>
+
+					<dialog class="mdl-dialog" id="bitcoin-dialog">
+						<h4 class="mdl-dialog__title" id="account-data-label"></h4>
+						<div class="mdl-dialog__content" id="qrcodes">
+							<input type="text" class="mdl-textfield__input" disabled id="data-qrcode">
+							<p class="" id="about-data"></p>
+							<div class="form-group qr-code" id="qrcode"></div>
+						</div>
+						<div class="mdl-dialog__actions">
+							<button type="button" class="mdl-button mdl-button--colored hide-modal">Close</button>
+						</div>
+					</dialog>
+
+					</main>
+				</div>
+				<dialog class="mdl-dialog" id="about-dialog2">
+
+					<h4 class="mdl-dialog__title">What is Amber?</h4>
+					<div class="mdl-dialog__content">
+
+						<p>Amber lets you create air gapped bitcoin addresses and transactions with your offline phone.</p>
+
+						<p>In order to take full advantage of offline wallet capabilities, we recommended you keep the phone where Amber is installed in airplane mode and never let it go online after you enter a passphrase.</p>
+
+						<p>Creating new bitcoin addresses uses the <a href="http://keybase.io/warp" target="_blank">Warpwallet</a> formula:</p>
+
+						<h6 id="warp-formula" class="fake-link">Warp Formula [...]</h6>
+						<img src="images/warpwallet-formula.png" class="img-responsive" id="warp-formula-img" style="max-width:300px; display:none">
+						
+						</br>
+
+						<p style="word-break: break-all;">For your security; you can double check the output address with other applications (for example&hellip; <a href="https://github.com/xorq/warpwallet_doublecheck_page" target="_blank">https://github.com/xorq/warpwallet_doublecheck_page</a> and <a href="https://github.com/davidapple/warpwallet-dismantled" target="_blank">https://github.com/davidapple/warpwallet-dismantled</a>)</p>
+
+						<p>You can use the emojis sequence to check that you haven't made a typo (if the emojis sequence is the same, your passphrase is the same)</p>
+
+						<p>To spend:</p>
+						<ol>
+							<li>Create a raw transaction on an online device, (using coinb.in for example)</li>
+							<li>With Amber, log in to your address using your passphrase/salt combination</li>
+							<li>After the wallet has been generated, click on Sign Transaction</li>
+							<li>The QR code with the signed transaction will show up, you have to scan it with an online device in order to push it to the bitcoin network (using a pushing service like <a href="blockr.io/tx/push" target="_blank">blockr.io/tx/push</a> or <a href="blockchain.info/pushtx" target="_blank">blockchain.info/pushtx</a>, for example).</li>
+						</ol>
+
+					</div>
+
+					<div class="mdl-dialog__actions">
+						<button type="button" class="mdl-button mdl-button--colored hide-modal">Close</button>
+					</div>
+
+				</dialog>
+
+				<dialog class="mdl-dialog" id="sign-transation-error-dialog">
+					<h4 class="mdl-dialog__title">Error</h4>
+					<div class="mdl-dialog__content">
+						<p>This private key was unable to sign your transaction.</p>
+					</div>
+					<div class="mdl-dialog__actions">
+						<button type="button" id="close-error" class="mdl-button mdl-button--colored hide-modal">Close</button>
+					</div>
+				</dialog>
+
+				</script>
+				
+				<script type="text/javascript" src="cordova.js"></script>
+				<script type="text/javascript" src="js/emojis.js"></script>
+				<script type="text/javascript" src="js/helpers.js"></script>
+				<script type="text/javascript" src="js/wallet.js"></script>
+				<script type="text/javascript" src="js/loginscreen.js"></script>
+				<script type="text/javascript" src="js/afterloginscreen.js"></script>
+				<script type="text/javascript" src="js/environment.js"></script>
+				<script type="text/javascript" src="js/tests.js"></script>
+				<script type="text/javascript" src="js/main.js"></script>
+		</body>
+</html>
